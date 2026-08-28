@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { StartQuestButton } from "@/components/start-quest-button";
 import { CompleteQuestPanel } from "@/components/complete-quest-panel";
+import { deriveQuestStatus } from "@/lib/game/quest-status";
 
 const CATEGORY_LABELS: Record<string, string> = {
   LOCATION: "Luogo",
@@ -22,6 +23,7 @@ const STATUS_LABELS: Record<string, { label: string; className: string }> = {
   AVAILABLE: { label: "Disponibile", className: "bg-gray-800 text-gray-300" },
   ACTIVE: { label: "In corso", className: "bg-yellow-900 text-yellow-300" },
   COMPLETED: { label: "Completata", className: "bg-green-900 text-green-300" },
+  LOCKED: { label: "🔒 Bloccata", className: "bg-red-950 text-red-300" },
 };
 
 /**
@@ -42,7 +44,7 @@ export default async function QuestDetailPage({
   const { data: quest } = await supabase
     .from("quests")
     .select(
-      "id, destination_id, title, description, instructions, category, difficulty, xp_reward, completion_type, image_url"
+      "id, destination_id, title, description, instructions, deep_info, category, difficulty, xp_reward, completion_type, image_url, requires_quest_id"
     )
     .eq("id", questId)
     .eq("is_active", true)
@@ -71,7 +73,31 @@ export default async function QuestDetailPage({
       ).data
     : null;
 
-  const status = completion?.status ?? "AVAILABLE";
+  // Change Request "Guida, Profilo, Livelli", Sezione 2.1: se questa Quest
+  // ha un prerequisito, serve sapere il suo titolo (per mostrarlo
+  // nell'indicatore LOCKED, Sezione 3.2) e se l'utente l'ha già completato.
+  let prerequisiteTitle: string | null = null;
+  let prerequisiteCompleted = false;
+  if (quest.requires_quest_id) {
+    const { data: prerequisiteQuest } = await supabase
+      .from("quests")
+      .select("title")
+      .eq("id", quest.requires_quest_id)
+      .single();
+    prerequisiteTitle = prerequisiteQuest?.title ?? null;
+
+    if (user) {
+      const { data: prerequisiteCompletion } = await supabase
+        .from("quest_completions")
+        .select("status")
+        .eq("user_id", user.id)
+        .eq("quest_id", quest.requires_quest_id)
+        .maybeSingle();
+      prerequisiteCompleted = prerequisiteCompletion?.status === "COMPLETED";
+    }
+  }
+
+  const status = deriveQuestStatus(completion?.status, quest.requires_quest_id, prerequisiteCompleted);
   const statusInfo = STATUS_LABELS[status];
   const destinationName = destination?.name;
 
@@ -118,6 +144,36 @@ export default async function QuestDetailPage({
         <div className="mt-4 rounded border border-gray-800 bg-gray-900 p-4">
           <h2 className="mb-1 text-sm font-semibold text-gray-300">Istruzioni</h2>
           <p className="text-sm text-gray-400">{quest.instructions}</p>
+        </div>
+      )}
+
+      {/* Info aggiuntive (Sezione 3.2, terzo componente): sempre
+          accessibile indipendentemente dallo stato della Quest, pensata
+          per essere letta mentre si è in cammino - non va quindi nascosta
+          dietro il completamento. Omessa del tutto (niente accordion
+          vuoto) se deep_info non è stato impostato in admin. */}
+      {quest.deep_info && (
+        <details className="group mt-4 rounded border border-gray-800 bg-gray-900">
+          <summary className="cursor-pointer list-none px-4 py-3 text-sm font-semibold text-gray-300 marker:content-none">
+            Info aggiuntive
+            <span className="float-right text-gray-500 group-open:hidden">+</span>
+            <span className="float-right hidden text-gray-500 group-open:inline">−</span>
+          </summary>
+          <p className="whitespace-pre-line border-t border-gray-800 px-4 py-3 text-sm text-gray-400">
+            {quest.deep_info}
+          </p>
+        </details>
+      )}
+
+      {status === "LOCKED" && (
+        <div className="mt-6 rounded border border-red-900 bg-red-950/50 px-4 py-3 text-sm text-red-200">
+          Questa Quest è bloccata
+          {prerequisiteTitle && (
+            <>
+              : completa prima <strong>{prerequisiteTitle}</strong>
+            </>
+          )}
+          .
         </div>
       )}
 

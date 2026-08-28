@@ -49,6 +49,15 @@ export default async function DestinationDashboardPage({
       ).data
     : null;
 
+  // Guida della destinazione (Change Request "Guida, Profilo, Livelli",
+  // Sezione 1/3.1): paragrafi liberi (Storia, Cibi tipici, Usanze, ...)
+  // curati dal pannello admin, mostrati come accordion.
+  const { data: sections } = await supabase
+    .from("destination_sections")
+    .select("id, label, icon, body")
+    .eq("destination_id", id)
+    .order("sort_order", { ascending: true });
+
   return (
     <main className="mx-auto w-full max-w-3xl flex-1 px-6 py-10">
       <p className="mb-4 text-sm text-gray-400">
@@ -95,6 +104,34 @@ export default async function DestinationDashboardPage({
           Mappa
         </Link>
       </div>
+
+      {sections && sections.length > 0 && (
+        <div className="mt-10">
+          <h2 className="mb-3 text-lg font-semibold text-white">Guida di {destination.name}</h2>
+          <div className="space-y-2">
+            {sections.map((section) => (
+              // <details>/<summary> nativi implementano l'accordion senza
+              // bisogno di stato React o di un Client Component dedicato
+              // (Sezione 3.1: "titolo sempre visibile, body visibile solo
+              // se espanso" è esattamente il comportamento di default).
+              <details
+                key={section.id}
+                className="group rounded-lg border border-gray-800 bg-gray-900 open:bg-gray-900/80"
+              >
+                <summary className="cursor-pointer list-none px-4 py-3 font-semibold text-white marker:content-none">
+                  <span className="mr-2">{section.icon || "📍"}</span>
+                  {section.label}
+                  <span className="float-right text-gray-500 group-open:hidden">+</span>
+                  <span className="float-right hidden text-gray-500 group-open:inline">−</span>
+                </summary>
+                <p className="whitespace-pre-line border-t border-gray-800 px-4 py-3 text-sm text-gray-300">
+                  {section.body}
+                </p>
+              </details>
+            ))}
+          </div>
+        </div>
+      )}
     </main>
   );
 }

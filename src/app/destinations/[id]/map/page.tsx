@@ -2,8 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import QuestMap from "./quest-map-client";
-
-type QuestStatus = "AVAILABLE" | "ACTIVE" | "COMPLETED";
+import { deriveQuestStatus, type QuestStatus } from "@/lib/game/quest-status";
 
 /**
  * Map (Sezione 29 / route da Tabella 6: /destinations/[id]/map, Fase 8).
@@ -32,7 +31,7 @@ export default async function DestinationMapPage({
 
   const { data: quests } = await supabase
     .from("quests")
-    .select("id, title, latitude, longitude")
+    .select("id, title, latitude, longitude, requires_quest_id")
     .eq("destination_id", id)
     .eq("is_active", true)
     .not("latitude", "is", null)
@@ -42,7 +41,7 @@ export default async function DestinationMapPage({
     data: { user },
   } = await supabase.auth.getUser();
 
-  const completionsByQuestId = new Map<string, QuestStatus>();
+  const completionsByQuestId = new Map<string, string>();
   if (user && quests && quests.length > 0) {
     const { data: completions } = await supabase
       .from("quest_completions")
@@ -52,15 +51,26 @@ export default async function DestinationMapPage({
         "quest_id",
         quests.map((q) => q.id)
       );
-    completions?.forEach((c) => completionsByQuestId.set(c.quest_id, c.status as QuestStatus));
+    completions?.forEach((c) => completionsByQuestId.set(c.quest_id, c.status));
   }
+
+  // Stesso ragionamento della Quest List (Sezione 2.1): il prerequisito è
+  // sempre un'altra Quest della stessa destinazione, quindi già presente
+  // in questa stessa mappa di completamenti.
+  const completedQuestIds = new Set(
+    [...completionsByQuestId].filter(([, status]) => status === "COMPLETED").map(([questId]) => questId)
+  );
 
   const markers = (quests ?? []).map((q) => ({
     id: q.id,
     title: q.title,
     latitude: q.latitude as number,
     longitude: q.longitude as number,
-    status: completionsByQuestId.get(q.id) ?? "AVAILABLE",
+    status: deriveQuestStatus(
+      completionsByQuestId.get(q.id),
+      q.requires_quest_id,
+      q.requires_quest_id ? completedQuestIds.has(q.requires_quest_id) : false
+    ) as QuestStatus,
   }));
 
   return (
@@ -85,6 +95,9 @@ export default async function DestinationMapPage({
         </span>
         <span className="flex items-center gap-1.5">
           <span className="h-3 w-3 rounded-full bg-green-500" /> Completata
+        </span>
+        <span className="flex items-center gap-1.5">
+          <span className="h-3 w-3 rounded-full bg-red-800" /> Bloccata
         </span>
       </div>
 

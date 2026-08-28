@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { deriveQuestStatus } from "@/lib/game/quest-status";
 
 const CATEGORY_LABELS: Record<string, string> = {
   LOCATION: "Luogo",
@@ -14,6 +15,7 @@ const STATUS_LABELS: Record<string, { label: string; className: string }> = {
   AVAILABLE: { label: "Disponibile", className: "bg-gray-800 text-gray-300" },
   ACTIVE: { label: "In corso", className: "bg-yellow-900 text-yellow-300" },
   COMPLETED: { label: "Completata", className: "bg-green-900 text-green-300" },
+  LOCKED: { label: "🔒 Bloccata", className: "bg-red-950 text-red-300" },
 };
 
 /**
@@ -44,7 +46,7 @@ export default async function PublicQuestListPage({
 
   const { data: quests } = await supabase
     .from("quests")
-    .select("id, title, category, difficulty, xp_reward, completion_type, image_url")
+    .select("id, title, category, difficulty, xp_reward, completion_type, image_url, requires_quest_id")
     .eq("destination_id", id)
     .eq("is_active", true)
     .order("sort_order", { ascending: true });
@@ -65,6 +67,15 @@ export default async function PublicQuestListPage({
       );
     completions?.forEach((c) => completionsByQuestId.set(c.quest_id, c.status));
   }
+
+  // Change Request "Guida, Profilo, Livelli", Sezione 2.1: il prerequisito
+  // di una Quest è sempre un'altra Quest della stessa destinazione (vedi
+  // il selettore del form admin, Sezione 4.2), quindi il suo stato di
+  // completamento è già disponibile nella stessa mappa costruita sopra -
+  // non serve una query separata.
+  const completedQuestIds = new Set(
+    [...completionsByQuestId].filter(([, status]) => status === "COMPLETED").map(([questId]) => questId)
+  );
 
   return (
     <main className="mx-auto w-full max-w-3xl flex-1 px-6 py-10">
@@ -92,7 +103,11 @@ export default async function PublicQuestListPage({
       ) : (
         <div className="space-y-3">
           {quests.map((q) => {
-            const status = completionsByQuestId.get(q.id) ?? "AVAILABLE";
+            const status = deriveQuestStatus(
+              completionsByQuestId.get(q.id),
+              q.requires_quest_id,
+              q.requires_quest_id ? completedQuestIds.has(q.requires_quest_id) : false
+            );
             const statusInfo = STATUS_LABELS[status];
             return (
               <Link

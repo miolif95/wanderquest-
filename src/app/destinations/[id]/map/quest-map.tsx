@@ -8,16 +8,18 @@ type QuestMarker = {
   title: string;
   latitude: number;
   longitude: number;
-  status: "AVAILABLE" | "ACTIVE" | "COMPLETED";
+  status: "AVAILABLE" | "ACTIVE" | "COMPLETED" | "LOCKED";
 };
 
 // Stessi colori usati per i badge di stato nelle altre pagine (grigio =
-// disponibile, giallo = in corso, verde = completata), qui come colori
+// disponibile, giallo = in corso, verde = completata, rosso = bloccata -
+// Change Request "Guida, Profilo, Livelli", Sezione 2.1), qui come colori
 // esadecimali perché pathOptions di Leaflet non accetta classi Tailwind.
 const STATUS_COLORS: Record<QuestMarker["status"], string> = {
   AVAILABLE: "#6b7280",
   ACTIVE: "#eab308",
   COMPLETED: "#22c55e",
+  LOCKED: "#991b1b",
 };
 
 /**

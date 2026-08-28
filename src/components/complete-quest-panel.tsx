@@ -127,8 +127,19 @@ export function CompleteQuestPanel({
 
         {result.leveledUp && (
           <p className="mt-2 rounded bg-yellow-900/50 px-3 py-2 text-yellow-300">
-            Sei salito al livello {result.newLevel}!
+            Sei salito al livello {result.newLevel}: <strong>{result.newLevelTitle}</strong>!
           </p>
+        )}
+
+        {/* Curiosità di completamento (Change Request "Guida, Profilo,
+            Livelli", Sezione 3.2): appare SOLO qui, mai nella pagina Quest
+            Detail - null se non impostata in admin, in quel caso il
+            blocco è semplicemente omesso. */}
+        {result.completionFact && (
+          <div className="mt-4 rounded border border-gray-700 bg-gray-800 px-3 py-2 text-left">
+            <p className="mb-1 text-xs font-semibold text-gray-400">💡 Lo sapevi?</p>
+            <p className="text-sm text-gray-300">{result.completionFact}</p>
+          </div>
         )}
 
         {result.achievementsUnlocked.length > 0 && (

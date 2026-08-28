@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
-import { getLevel } from "@/lib/game/level";
+import { getLevelProgress } from "@/lib/game/level";
 
 /**
  * Home (Sezione 12 della spec / route da Tabella 6: /).
@@ -28,6 +28,11 @@ export default async function Home() {
       ).data
     : null;
 
+  // Titolo di livello + barra di progresso (Change Request "Guida,
+  // Profilo, Livelli", Sezione 3.4): stesso getLevelProgress() usato in
+  // /profile e nella Completion Screen, mai un calcolo duplicato.
+  const progress = profile ? getLevelProgress(profile.xp) : null;
+
   return (
     <main className="flex flex-1 flex-col items-center justify-center bg-black px-4 text-center">
       <h1 className="text-4xl font-bold text-white">WanderQuest</h1>
@@ -35,11 +40,18 @@ export default async function Home() {
         Trasforma l&apos;esplorazione di una città in una serie di Quest nel mondo reale.
       </p>
 
-      {profile ? (
-        <p className="mt-6 text-gray-300">
-          Bentornato, <strong className="text-yellow-400">{profile.username}</strong> — Livello{" "}
-          {getLevel(profile.xp)} · {profile.xp} XP
-        </p>
+      {profile && progress ? (
+        <div className="mt-6 w-full max-w-xs">
+          <p className="text-gray-300">
+            Bentornato, <strong className="text-yellow-400">{profile.username}</strong>
+          </p>
+          <p className="mt-1 text-sm text-gray-400">
+            Livello {progress.level} · <span className="text-yellow-400">{progress.title}</span>
+          </p>
+          <div className="mt-2 h-2 overflow-hidden rounded-full bg-gray-800">
+            <div className="h-full bg-yellow-500" style={{ width: `${progress.progressRatio * 100}%` }} />
+          </div>
+        </div>
       ) : (
         <p className="mt-6 text-gray-300">Registrati per iniziare a tracciare i tuoi progressi.</p>
       )}

@@ -29,24 +29,38 @@ export default function LoginPage() {
     setLoading(true);
 
     const supabase = createClient();
-    const { error: signInError } = await supabase.auth.signInWithPassword({
+    const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
 
-    setLoading(false);
-
     if (signInError) {
+      setLoading(false);
       setError("Email o password non corrette.");
       return;
     }
+
+    // Onboarding del profilo (Change Request "Guida, Profilo, Livelli",
+    // Sezione 3.3): un profilo senza foto né bio non è mai stato
+    // personalizzato, quindi questo è (o sembra) il primo accesso reale -
+    // dato che la conferma email impedisce di intercettare questo momento
+    // subito dopo /register, il login è il punto più affidabile per
+    // proporre l'onboarding. Resta saltabile e non blocca comunque
+    // l'accesso al resto dell'app se l'utente preferisce ignorarlo.
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("avatar_url, bio")
+      .eq("id", signInData.user.id)
+      .single();
+
+    setLoading(false);
 
     // router.refresh() forza i Server Component della pagina di
     // destinazione a rileggere la sessione appena creata (senza, il
     // middleware avrebbe comunque aggiornato il cookie, ma la navigazione
     // client-side di Next.js potrebbe mostrare dati di una cache
     // precedente alla login).
-    router.push("/admin");
+    router.push(profile && !profile.avatar_url && !profile.bio ? "/onboarding/profile" : "/");
     router.refresh();
   }
 
