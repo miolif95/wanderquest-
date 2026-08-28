@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { StartQuestButton } from "@/components/start-quest-button";
+import { CompleteQuestPanel } from "@/components/complete-quest-panel";
 
 const CATEGORY_LABELS: Record<string, string> = {
   LOCATION: "Luogo",
@@ -63,7 +64,7 @@ export default async function QuestDetailPage({
     ? (
         await supabase
           .from("quest_completions")
-          .select("status")
+          .select("id, status")
           .eq("user_id", user.id)
           .eq("quest_id", questId)
           .maybeSingle()
@@ -132,10 +133,14 @@ export default async function QuestDetailPage({
           </p>
         ))}
 
-      {status === "ACTIVE" && (
-        <p className="mt-6 text-sm text-gray-400">
-          Quest in corso — il completamento sarà disponibile a breve.
-        </p>
+      {status === "ACTIVE" && user && completion && (
+        <CompleteQuestPanel
+          questId={quest.id}
+          completionId={completion.id}
+          userId={user.id}
+          completionType={quest.completion_type as "GPS" | "PHOTO" | "MANUAL"}
+          destinationId={quest.destination_id}
+        />
       )}
     </main>
   );
