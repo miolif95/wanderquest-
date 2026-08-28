@@ -1,13 +1,15 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 
 /**
- * Pagina di login essenziale (Fase 2: infrastruttura minima di auth per
- * poter testare il pannello admin prima della Fase 3, che aggiungerà
- * registrazione, logout e la UI rifinita descritta nel PRD).
+ * Pagina di login (Sezione 11 della spec / route da Tabella 6: /login).
+ * Creata come infrastruttura minima in Fase 2 per testare il pannello
+ * admin, ora fa parte del flusso di autenticazione completo insieme a
+ * /register (Fase 3).
  *
  * L'intera pagina è un Client Component ('use client') perché è solo un
  * form interattivo con stato locale (campi, errore, caricamento): non ha
@@ -97,6 +99,13 @@ export default function LoginPage() {
         >
           {loading ? "Accesso in corso..." : "Accedi"}
         </button>
+
+        <p className="text-center text-sm text-gray-400">
+          Non hai un account?{" "}
+          <Link href="/register" className="text-yellow-400 hover:underline">
+            Registrati
+          </Link>
+        </p>
       </form>
     </main>
   );
