@@ -26,9 +26,9 @@ export default async function PassportPage() {
   const { data: destinations } = destinationIds.length
     ? await supabase
         .from("destinations")
-        .select("id, name, country")
+        .select("id, name, country, image_url")
         .in("id", destinationIds)
-    : { data: [] as { id: string; name: string; country: string }[] };
+    : { data: [] as { id: string; name: string; country: string; image_url: string | null }[] };
 
   const destinationById = new Map(destinations?.map((d) => [d.id, d]));
 
@@ -56,17 +56,27 @@ export default async function PassportPage() {
             return (
               <div
                 key={stamp.destination_id}
-                className="rounded-lg border-2 border-dashed border-yellow-700 bg-gray-900 p-5 text-center"
+                className="overflow-hidden rounded-lg border-2 border-dashed border-yellow-700 bg-gray-900 text-center"
               >
-                <p className="text-3xl">🛂</p>
-                <h2 className="mt-2 text-lg font-bold text-white">{destination?.name}</h2>
-                <p className="text-sm text-gray-400">{destination?.country}</p>
-                <p className="mt-3 text-xs text-gray-500">
-                  Prima visita: {new Date(stamp.first_completed_at).toLocaleDateString("it-IT")}
-                </p>
-                <p className="mt-1 text-sm text-yellow-400">
-                  {stamp.quests_completed} Quest · {stamp.xp_earned} XP
-                </p>
+                {destination?.image_url && (
+                  // eslint-disable-next-line @next/next/no-img-element -- URL dinamico da Supabase Storage
+                  <img
+                    src={destination.image_url}
+                    alt={destination.name}
+                    className="h-32 w-full object-cover"
+                  />
+                )}
+                <div className="p-5">
+                  <p className="text-3xl">🛂</p>
+                  <h2 className="mt-2 text-lg font-bold text-white">{destination?.name}</h2>
+                  <p className="text-sm text-gray-400">{destination?.country}</p>
+                  <p className="mt-3 text-xs text-gray-500">
+                    Prima visita: {new Date(stamp.first_completed_at).toLocaleDateString("it-IT")}
+                  </p>
+                  <p className="mt-1 text-sm text-yellow-400">
+                    {stamp.quests_completed} Quest · {stamp.xp_earned} XP
+                  </p>
+                </div>
               </div>
             );
           })}
