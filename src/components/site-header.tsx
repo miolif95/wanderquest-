@@ -27,17 +27,23 @@ export async function SiteHeader() {
     : null;
 
   return (
-    <div className="flex items-center justify-between bg-gray-900 px-6 py-2 text-sm">
-      <Link href="/" className="font-bold text-yellow-400">
+    <div className="flex items-center justify-between gap-2 bg-gray-900 px-4 py-2 text-sm sm:px-6">
+      <Link href="/" className="shrink-0 font-bold text-yellow-400">
         WanderQuest
       </Link>
-      <div className="flex items-center gap-4">
+      {/* gap ridotto e username troncato su schermi stretti (Sezione 37,
+          mobile-first): senza questo, uno username lungo può spingere
+          l'header oltre la larghezza dello schermo su un telefono. */}
+      <div className="flex min-w-0 items-center gap-2 sm:gap-4">
         {user ? (
           <>
-            <Link href="/passport" className="text-gray-300 hover:text-yellow-400">
+            <Link href="/passport" className="shrink-0 text-gray-300 hover:text-yellow-400">
               Passport
             </Link>
-            <Link href="/profile" className="text-gray-300 hover:text-yellow-400">
+            <Link
+              href="/profile"
+              className="max-w-[7rem] truncate text-gray-300 hover:text-yellow-400"
+            >
               {profile?.username}
             </Link>
             <LogoutButton />
