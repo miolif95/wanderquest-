@@ -5,6 +5,31 @@ import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 
 /**
+ * Traduce i messaggi d'errore di Supabase Auth in italiano, riconoscendo
+ * i casi noti. Un messaggio generico ("Registrazione non riuscita")
+ * nasconde la causa reale e rende impossibile capire cosa è successo
+ * quando un utente segnala un problema senza screenshot: qui si mostra
+ * sempre qualcosa di specifico, e per i casi non riconosciuti si include
+ * il messaggio originale invece di inghiottirlo del tutto.
+ */
+function describeSignUpError(message: string): string {
+  const lower = message.toLowerCase();
+  if (lower.includes("already registered")) {
+    return "Questa email è già registrata.";
+  }
+  if (lower.includes("rate limit")) {
+    return "Troppi tentativi di registrazione in poco tempo. Riprova tra qualche minuto.";
+  }
+  if (lower.includes("invalid") && lower.includes("email")) {
+    return "L'indirizzo email non è valido.";
+  }
+  if (lower.includes("password")) {
+    return `Password non valida: ${message}`;
+  }
+  return `Registrazione non riuscita: ${message}`;
+}
+
+/**
  * Pagina di registrazione (Fase 3, Sezione 11 della spec / route da
  * Tabella 6: /register).
  *
@@ -58,11 +83,7 @@ export default function RegisterPage() {
     setLoading(false);
 
     if (signUpError) {
-      setError(
-        signUpError.message.includes("already registered")
-          ? "Questa email è già registrata."
-          : "Registrazione non riuscita, riprova."
-      );
+      setError(describeSignUpError(signUpError.message));
       return;
     }
 
