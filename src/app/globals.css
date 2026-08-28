@@ -1,8 +1,14 @@
 @import "tailwindcss";
 
+/*
+ * WanderQuest usa un tema scuro fisso in tutta l'app (Fase 4 in poi), non
+ * legato al colore di sistema del dispositivo: --background/--foreground
+ * qui sotto NON cambiano con prefers-color-scheme, a differenza dello
+ * scaffold di default di create-next-app da cui questo file deriva.
+ */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #000000;
+  --foreground: #ededed;
 }
 
 @theme inline {
@@ -10,13 +16,6 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
 }
 
 body {
