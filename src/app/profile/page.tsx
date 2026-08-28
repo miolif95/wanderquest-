@@ -83,7 +83,7 @@ export default async function ProfilePage() {
         </div>
       </div>
 
-      <div className="mt-6 flex gap-4 text-sm">
+      <div className="mt-6 flex flex-wrap gap-4 text-sm">
         <Link href="/profile/achievements" className="text-yellow-400 hover:underline">
           Achievement
         </Link>
@@ -92,6 +92,12 @@ export default async function ProfilePage() {
         </Link>
         <Link href="/passport" className="text-yellow-400 hover:underline">
           Travel Passport
+        </Link>
+        <Link href="/profile/photos" className="text-yellow-400 hover:underline">
+          Le mie foto
+        </Link>
+        <Link href={`/u/${profile?.username}`} className="text-gray-400 hover:underline">
+          Vedi come profilo pubblico
         </Link>
       </div>
     </main>
