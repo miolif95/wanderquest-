@@ -25,6 +25,9 @@ export async function POST(request: NextRequest) {
       radius_m: body.radius_m ?? null,
       image_url: body.image_url ?? null,
       instructions: body.instructions ?? null,
+      deep_info: body.deep_info ?? null,
+      completion_fact: body.completion_fact ?? null,
+      requires_quest_id: body.requires_quest_id ?? null,
       sort_order: body.sort_order ?? 0,
       is_active: body.is_active ?? true,
     })

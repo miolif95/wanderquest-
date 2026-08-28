@@ -70,6 +70,12 @@ export default async function AdminDestinationsPage() {
                     Quest
                   </Link>
                   <Link
+                    href={`/admin/destinations/${d.id}/sections`}
+                    className="text-yellow-400 hover:underline"
+                  >
+                    Guida
+                  </Link>
+                  <Link
                     href={`/admin/destinations/${d.id}`}
                     className="text-yellow-400 hover:underline"
                   >

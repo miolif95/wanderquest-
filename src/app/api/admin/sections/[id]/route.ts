@@ -2,7 +2,12 @@ import { NextRequest, NextResponse } from "next/server";
 import { requireAdminApi } from "@/lib/admin/require-admin-api";
 import { createAdminClient } from "@/lib/supabase/admin";
 
-/** PUT /api/admin/quests/:id - aggiorna una Quest (Tabella 13). */
+/**
+ * PUT /api/admin/sections/:id - modifica un paragrafo della guida
+ * (etichetta/icona/testo) o solo il suo sort_order (usato anche dal
+ * riordino con le frecce su/giù, Sezione 4.1: "sufficiente per l'MVP, non
+ * serve drag-and-drop").
+ */
 export async function PUT(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
@@ -15,24 +20,12 @@ export async function PUT(
   const admin = createAdminClient();
 
   const { data, error } = await admin
-    .from("quests")
+    .from("destination_sections")
     .update({
-      title: body.title,
-      description: body.description,
-      category: body.category,
-      difficulty: body.difficulty,
-      xp_reward: body.xp_reward,
-      completion_type: body.completion_type,
-      latitude: body.latitude ?? null,
-      longitude: body.longitude ?? null,
-      radius_m: body.radius_m ?? null,
-      image_url: body.image_url ?? null,
-      instructions: body.instructions ?? null,
-      deep_info: body.deep_info ?? null,
-      completion_fact: body.completion_fact ?? null,
-      requires_quest_id: body.requires_quest_id ?? null,
-      sort_order: body.sort_order ?? 0,
-      is_active: body.is_active,
+      label: body.label,
+      icon: body.icon || null,
+      body: body.body,
+      sort_order: body.sort_order,
     })
     .eq("id", id)
     .select()
@@ -45,7 +38,7 @@ export async function PUT(
   return NextResponse.json(data);
 }
 
-/** DELETE /api/admin/quests/:id (Tabella 13). */
+/** DELETE /api/admin/sections/:id */
 export async function DELETE(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
@@ -56,7 +49,7 @@ export async function DELETE(
   const { id } = await params;
   const admin = createAdminClient();
 
-  const { error } = await admin.from("quests").delete().eq("id", id);
+  const { error } = await admin.from("destination_sections").delete().eq("id", id);
 
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 400 });

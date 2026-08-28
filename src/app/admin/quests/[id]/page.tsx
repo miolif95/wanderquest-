@@ -20,6 +20,16 @@ export default async function EditQuestPage({
     .eq("id", quest.destination_id)
     .single();
 
+  // Prerequisito (Sezione 4.2): come in /admin/quests/new, ma qui va
+  // esclusa la Quest stessa - altrimenti il form permetterebbe di
+  // impostarla come prerequisito di se stessa, un auto-blocco permanente.
+  const { data: siblingQuests } = await supabase
+    .from("quests")
+    .select("id, title")
+    .eq("destination_id", quest.destination_id)
+    .neq("id", id)
+    .order("sort_order", { ascending: true });
+
   return (
     <div className="space-y-6">
       <p className="text-sm text-gray-400">
@@ -32,7 +42,7 @@ export default async function EditQuestPage({
         </Link>
       </p>
       <h1 className="text-2xl font-bold">Modifica Quest</h1>
-      <QuestForm destinationId={quest.destination_id} quest={quest} />
+      <QuestForm destinationId={quest.destination_id} quest={quest} siblingQuests={siblingQuests ?? []} />
     </div>
   );
 }

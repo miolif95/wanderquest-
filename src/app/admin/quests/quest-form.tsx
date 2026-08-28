@@ -36,6 +36,9 @@ type Quest = {
   radius_m: number | null;
   image_url: string | null;
   instructions: string | null;
+  deep_info: string | null;
+  completion_fact: string | null;
+  requires_quest_id: string | null;
   sort_order: number;
   is_active: boolean;
 };
@@ -47,13 +50,20 @@ type Quest = {
  * La mappa cliccabile per lat/lng compare solo per completion_type GPS,
  * dato che è l'unico tipo di Quest per cui la posizione serve davvero
  * (Sezione 8: PHOTO e MANUAL non hanno una posizione target da validare).
+ *
+ * siblingQuests (Change Request "Guida, Profilo, Livelli", Sezione 4.2):
+ * le altre Quest della stessa destinazione, per il selettore del
+ * prerequisito - già filtrate dalla pagina server (esclude questa stessa
+ * Quest in modifica, altrimenti si potrebbe creare un auto-blocco).
  */
 export function QuestForm({
   destinationId,
   quest,
+  siblingQuests,
 }: {
   destinationId: string;
   quest?: Quest;
+  siblingQuests: { id: string; title: string }[];
 }) {
   const router = useRouter();
   const isEdit = Boolean(quest);
@@ -75,6 +85,9 @@ export function QuestForm({
   const [radiusM, setRadiusM] = useState(quest?.radius_m ?? 100);
   const [imageUrl, setImageUrl] = useState<string | null>(quest?.image_url ?? null);
   const [instructions, setInstructions] = useState(quest?.instructions ?? "");
+  const [deepInfo, setDeepInfo] = useState(quest?.deep_info ?? "");
+  const [completionFact, setCompletionFact] = useState(quest?.completion_fact ?? "");
+  const [requiresQuestId, setRequiresQuestId] = useState(quest?.requires_quest_id ?? "");
   const [sortOrder, setSortOrder] = useState(quest?.sort_order ?? 0);
   const [isActive, setIsActive] = useState(quest?.is_active ?? true);
   const [error, setError] = useState<string | null>(null);
@@ -103,6 +116,9 @@ export function QuestForm({
       radius_m: completionType === "GPS" ? radiusM : null,
       image_url: imageUrl,
       instructions: instructions || null,
+      deep_info: deepInfo || null,
+      completion_fact: completionFact || null,
+      requires_quest_id: requiresQuestId || null,
       sort_order: sortOrder,
       is_active: isActive,
     };
@@ -249,6 +265,53 @@ export function QuestForm({
           rows={2}
           className="w-full rounded border border-gray-700 bg-gray-900 px-3 py-2"
         />
+      </div>
+
+      <div className="space-y-1">
+        <label className="text-sm text-gray-300">Info aggiuntive (facoltative)</label>
+        <p className="text-xs text-gray-500">
+          Terzo componente del Quest Detail (Sezione 3.2): sempre accessibile, pensato per essere
+          letto mentre si è in cammino verso il luogo.
+        </p>
+        <textarea
+          value={deepInfo}
+          onChange={(e) => setDeepInfo(e.target.value)}
+          rows={3}
+          className="w-full rounded border border-gray-700 bg-gray-900 px-3 py-2"
+        />
+      </div>
+
+      <div className="space-y-1">
+        <label className="text-sm text-gray-300">Curiosità di completamento (facoltativa)</label>
+        <p className="text-xs text-gray-500">
+          Mostrata solo nel popup dopo un completamento riuscito, mai nella pagina Quest Detail.
+        </p>
+        <textarea
+          value={completionFact}
+          onChange={(e) => setCompletionFact(e.target.value)}
+          rows={2}
+          className="w-full rounded border border-gray-700 bg-gray-900 px-3 py-2"
+        />
+      </div>
+
+      <div className="space-y-1">
+        <label className="text-sm text-gray-300">Prerequisito (facoltativo)</label>
+        <p className="text-xs text-gray-500">
+          Se impostato, questa Quest resta bloccata (LOCKED) finché l&apos;utente non completa la
+          Quest selezionata qui.
+        </p>
+        <select
+          value={requiresQuestId}
+          onChange={(e) => setRequiresQuestId(e.target.value)}
+          className="w-full rounded border border-gray-700 bg-gray-900 px-3 py-2"
+        >
+          <option value="">Nessuno - sempre disponibile</option>
+          {siblingQuests.map((q) => (
+            <option key={q.id} value={q.id}>
+              {q.title}
+            </option>
+          ))}
+        </select>
       </div>
 
       <div className="space-y-1">

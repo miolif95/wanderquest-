@@ -27,6 +27,15 @@ export default async function NewQuestPage({
 
   if (!destination) notFound();
 
+  // Prerequisito (Sezione 4.2): la lista di Quest della stessa
+  // destinazione tra cui scegliere - qui non c'è ancora una Quest da
+  // escludere perché stiamo creandone una nuova.
+  const { data: siblingQuests } = await supabase
+    .from("quests")
+    .select("id, title")
+    .eq("destination_id", destination.id)
+    .order("sort_order", { ascending: true });
+
   return (
     <div className="space-y-6">
       <p className="text-sm text-gray-400">
@@ -39,7 +48,7 @@ export default async function NewQuestPage({
         </Link>
       </p>
       <h1 className="text-2xl font-bold">Nuova Quest</h1>
-      <QuestForm destinationId={destination.id} />
+      <QuestForm destinationId={destination.id} siblingQuests={siblingQuests ?? []} />
     </div>
   );
 }
