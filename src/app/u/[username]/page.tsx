@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { getLevel } from "@/lib/game/level";
+import { resolveQuestProofUrl } from "@/lib/storage/quest-proof-url";
 import { BlockButton } from "./block-button";
 import { ReportButton } from "@/components/report-button";
 import { PhotoCard } from "./photo-card";
@@ -114,6 +115,17 @@ export default async function PublicProfilePage({
         }[],
       };
 
+  // quest-proofs è un bucket privato: l'URL "pubblico" salvato in DB non
+  // funziona da solo, va rifirmato a ogni caricamento della pagina (vedi
+  // lib/storage/quest-proof-url.ts per il perché).
+  const displayUrlByCompletionId = new Map<string, string | null>(
+    await Promise.all(
+      (completions ?? [])
+        .filter((c) => c.proof_url)
+        .map(async (c) => [c.id, await resolveQuestProofUrl(supabase, c.proof_url!)] as const)
+    )
+  );
+
   const commenterIds = [...new Set(comments?.map((c) => c.user_id) ?? [])];
   const { data: commenters } = commenterIds.length
     ? await supabase.from("profiles").select("id, username").in("id", commenterIds)
@@ -154,10 +166,11 @@ export default async function PublicProfilePage({
   const photosByDestination = new Map<string, PhotoItem[]>();
   completions?.forEach((c) => {
     const quest = questById.get(c.quest_id);
-    if (!quest || !c.proof_url) return;
+    const displayUrl = displayUrlByCompletionId.get(c.id);
+    if (!quest || !c.proof_url || !displayUrl) return;
     const item: PhotoItem = {
       id: c.id,
-      url: c.proof_url,
+      url: displayUrl,
       questTitle: quest.title,
       categoryIcon: CATEGORY_ICONS[quest.category] ?? "🏅",
       likeCount: likeCountByCompletion.get(c.id) ?? 0,

@@ -17,11 +17,15 @@ import { createClient } from "@/lib/supabase/client";
 export function PhotoManageCard({
   completionId,
   url,
+  displayUrl,
   questTitle,
   initiallyPublic,
 }: {
   completionId: string;
+  /** URL grezzo salvato in DB, usato SOLO per risalire al path Storage da cancellare - non è mai valido come src di un'immagine (bucket privato, vedi lib/storage/quest-proof-url.ts). */
   url: string;
+  /** URL firmato, effettivamente caricabile, o null se la generazione è fallita. */
+  displayUrl: string | null;
   questTitle: string;
   initiallyPublic: boolean;
 }) {
@@ -92,8 +96,14 @@ export function PhotoManageCard({
 
   return (
     <div className="overflow-hidden rounded-lg border border-gray-800 bg-gray-900">
-      {/* eslint-disable-next-line @next/next/no-img-element -- URL dinamico da Supabase Storage */}
-      <img src={url} alt={questTitle} className="h-40 w-full object-cover" />
+      {displayUrl ? (
+        // eslint-disable-next-line @next/next/no-img-element -- URL firmato dinamico da Supabase Storage
+        <img src={displayUrl} alt={questTitle} className="h-40 w-full object-cover" />
+      ) : (
+        <div className="flex h-40 w-full items-center justify-center bg-gray-800 text-sm text-gray-500">
+          Foto non disponibile
+        </div>
+      )}
       <div className="p-3">
         <p className="mb-2 text-sm font-semibold text-white">{questTitle}</p>
         {error && <p className="mb-2 text-xs text-red-400">{error}</p>}

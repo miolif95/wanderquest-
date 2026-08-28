@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { requireUser } from "@/lib/auth/require-user";
+import { resolveQuestProofUrl } from "@/lib/storage/quest-proof-url";
 import { PhotoManageCard } from "./photo-manage-card";
 
 /**
@@ -24,6 +25,17 @@ export default async function ProfilePhotosPage() {
     : { data: [] as { id: string; title: string }[] };
   const questTitleById = new Map(quests?.map((q) => [q.id, q.title]));
 
+  // quest-proofs è un bucket privato: l'URL "pubblico" salvato in DB non
+  // funziona mai da solo, va rifirmato a ogni caricamento della pagina
+  // (vedi lib/storage/quest-proof-url.ts per il perché).
+  const displayUrlByCompletionId = new Map<string, string | null>(
+    await Promise.all(
+      (completions ?? [])
+        .filter((c) => c.proof_url)
+        .map(async (c) => [c.id, await resolveQuestProofUrl(supabase, c.proof_url!)] as const)
+    )
+  );
+
   return (
     <main className="mx-auto w-full max-w-2xl flex-1 px-6 py-10">
       <p className="mb-4 text-sm text-gray-400">
@@ -47,6 +59,7 @@ export default async function ProfilePhotosPage() {
                   key={c.id}
                   completionId={c.id}
                   url={c.proof_url}
+                  displayUrl={displayUrlByCompletionId.get(c.id) ?? null}
                   questTitle={questTitleById.get(c.quest_id) ?? ""}
                   initiallyPublic={c.is_public}
                 />
