@@ -34,7 +34,12 @@ export async function SiteHeader() {
       <div className="flex items-center gap-4">
         {user ? (
           <>
-            <span className="text-gray-300">{profile?.username}</span>
+            <Link href="/passport" className="text-gray-300 hover:text-yellow-400">
+              Passport
+            </Link>
+            <Link href="/profile" className="text-gray-300 hover:text-yellow-400">
+              {profile?.username}
+            </Link>
             <LogoutButton />
           </>
         ) : (
