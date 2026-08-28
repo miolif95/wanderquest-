@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { requireUser } from "@/lib/auth/require-user";
 import { getLevelProgress } from "@/lib/game/level";
-import { ProfileEditForm } from "@/components/profile-edit-form";
+import { ProfileEditToggle } from "./profile-edit-toggle";
 
 /**
  * Profile - panoramica (Sezione 30 / route da Tabella 6: /profile).
@@ -63,18 +63,11 @@ export default async function ProfilePage() {
         </div>
       </div>
 
-      <details className="group mt-3">
-        <summary className="cursor-pointer list-none text-sm text-yellow-400 hover:underline marker:content-none">
-          Modifica profilo
-        </summary>
-        <div className="mt-3">
-          <ProfileEditForm
-            userId={user.id}
-            initialAvatarUrl={profile?.avatar_url ?? null}
-            initialBio={profile?.bio ?? null}
-          />
-        </div>
-      </details>
+      <ProfileEditToggle
+        userId={user.id}
+        initialAvatarUrl={profile?.avatar_url ?? null}
+        initialBio={profile?.bio ?? null}
+      />
 
       <div className="mt-6 rounded-lg border border-gray-800 bg-gray-900 p-6">
         <div className="flex items-baseline justify-between">
