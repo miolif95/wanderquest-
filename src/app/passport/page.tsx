@@ -67,8 +67,7 @@ export default async function PassportPage() {
                   />
                 )}
                 <div className="p-5">
-                  <p className="text-3xl">🛂</p>
-                  <h2 className="mt-2 text-lg font-bold text-white">{destination?.name}</h2>
+                  <h2 className="text-lg font-bold text-white">{destination?.name}</h2>
                   <p className="text-sm text-gray-400">{destination?.country}</p>
                   <p className="mt-3 text-xs text-gray-500">
                     Prima visita: {new Date(stamp.first_completed_at).toLocaleDateString("it-IT")}
