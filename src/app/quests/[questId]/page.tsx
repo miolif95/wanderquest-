@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { StartQuestButton } from "@/components/start-quest-button";
 
 const CATEGORY_LABELS: Record<string, string> = {
   LOCATION: "Luogo",
@@ -25,9 +26,9 @@ const STATUS_LABELS: Record<string, { label: string; className: string }> = {
 /**
  * Quest Detail (Sezione 18 / route da Tabella 6: /quests/[questId]).
  *
- * Fase 4: sola lettura. Il pulsante "Avvia Quest" e il flusso di
- * completamento arrivano rispettivamente in Fase 5 e Fase 6 - qui si
- * mostra solo lo stato attuale, senza alcuna azione possibile.
+ * Fase 5: aggiunto il pulsante "Avvia Quest" (AVAILABLE -> ACTIVE, Tabella
+ * 5). Il flusso di completamento vero e proprio (ACTIVE -> COMPLETED)
+ * arriva in Fase 6.
  */
 export default async function QuestDetailPage({
   params,
@@ -117,6 +118,24 @@ export default async function QuestDetailPage({
           <h2 className="mb-1 text-sm font-semibold text-gray-300">Istruzioni</h2>
           <p className="text-sm text-gray-400">{quest.instructions}</p>
         </div>
+      )}
+
+      {status === "AVAILABLE" &&
+        (user ? (
+          <StartQuestButton questId={quest.id} />
+        ) : (
+          <p className="mt-6 text-sm text-gray-400">
+            <Link href="/login" className="text-yellow-400 hover:underline">
+              Accedi
+            </Link>{" "}
+            per avviare questa Quest.
+          </p>
+        ))}
+
+      {status === "ACTIVE" && (
+        <p className="mt-6 text-sm text-gray-400">
+          Quest in corso — il completamento sarà disponibile a breve.
+        </p>
       )}
     </main>
   );
