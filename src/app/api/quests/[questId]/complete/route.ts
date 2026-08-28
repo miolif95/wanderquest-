@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { distanceMeters } from "@/lib/game/distance";
-import { getLevel } from "@/lib/game/level";
+import { getLevel, getLevelTitle } from "@/lib/game/level";
+import { isQuestLocked } from "@/lib/game/quest-status";
 import type { CompleteQuestResponse, UnlockedAchievement } from "@/lib/game/types";
 
 /**
@@ -41,13 +42,24 @@ export async function POST(
 
   const { data: quest } = await supabase
     .from("quests")
-    .select("id, completion_type, latitude, longitude, radius_m")
+    .select("id, completion_type, latitude, longitude, radius_m, completion_fact, requires_quest_id")
     .eq("id", questId)
     .eq("is_active", true)
     .single();
 
   if (!quest) {
     return NextResponse.json({ error: "Quest non trovata." }, { status: 404 });
+  }
+
+  // Change Request "Guida, Profilo, Livelli", Sezione 2.2: rivalidato qui
+  // anche se in pratica una Quest LOCKED non dovrebbe mai arrivare allo
+  // stato ACTIVE controllato subito sotto (lo stesso controllo è già in
+  // /start) - difesa in profondità, non fidarsi dello stato mostrato in UI.
+  if (await isQuestLocked(supabase, user.id, quest.requires_quest_id)) {
+    return NextResponse.json(
+      { error: "Questa Quest richiede il completamento di un'altra Quest prima di poter essere completata." },
+      { status: 403 }
+    );
   }
 
   const { data: completion } = await supabase
@@ -150,13 +162,19 @@ export async function POST(
     wanderstamp: { destinationId: string; questsCompleted: number; xpEarned: number };
   };
 
+  const newLevel = getLevel(data.totalXp);
   const response: CompleteQuestResponse = {
     xpGained: data.xpGained,
     totalXp: data.totalXp,
-    leveledUp: getLevel(data.totalXp) > getLevel(data.oldXp),
-    newLevel: getLevel(data.totalXp),
+    leveledUp: newLevel > getLevel(data.oldXp),
+    newLevel,
+    newLevelTitle: getLevelTitle(newLevel),
     achievementsUnlocked: data.achievementsUnlocked,
     wanderstamp: data.wanderstamp,
+    // Letto così com'è dalla Quest (Sezione 2.2): può essere null se non
+    // impostato in admin, il client gestisce quel caso senza mostrare la
+    // sezione curiosità nella Completion Screen (Sezione 3.2/3.4).
+    completionFact: quest.completion_fact,
   };
 
   return NextResponse.json(response);

@@ -16,10 +16,14 @@ export type CompleteQuestResponse = {
   totalXp: number;
   leveledUp: boolean;
   newLevel: number;
+  /** Titolo del nuovo livello (Change Request "Guida, Profilo, Livelli", Sezione 2.3), da evidenziare nel messaggio di level-up. */
+  newLevelTitle: string;
   achievementsUnlocked: UnlockedAchievement[];
   wanderstamp: {
     destinationId: string;
     questsCompleted: number;
     xpEarned: number;
   };
+  /** quests.completion_fact della Quest appena completata, o null se non impostato in admin (Sezione 2.2/3.2). */
+  completionFact: string | null;
 };

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
+import { isQuestLocked } from "@/lib/game/quest-status";
 
 /**
  * POST /api/quests/:questId/start (Tabella 5 della spec tecnica).
@@ -40,13 +41,23 @@ export async function POST(
 
   const { data: quest } = await supabase
     .from("quests")
-    .select("id")
+    .select("id, requires_quest_id")
     .eq("id", questId)
     .eq("is_active", true)
     .single();
 
   if (!quest) {
     return NextResponse.json({ error: "Quest non trovata." }, { status: 404 });
+  }
+
+  // Change Request "Guida, Profilo, Livelli", Sezione 2.1/2.2: una Quest
+  // LOCKED non va nascosta solo in UI, va rifiutata anche qui, altrimenti
+  // una chiamata diretta all'API aggirerebbe il prerequisito.
+  if (await isQuestLocked(supabase, user.id, quest.requires_quest_id)) {
+    return NextResponse.json(
+      { error: "Questa Quest richiede il completamento di un'altra Quest prima di poter essere avviata." },
+      { status: 403 }
+    );
   }
 
   const { data, error } = await supabase
