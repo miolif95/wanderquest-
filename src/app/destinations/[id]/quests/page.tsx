@@ -77,7 +77,15 @@ export default async function PublicQuestListPage({
           {destination.name}
         </Link>
       </p>
-      <h1 className="mb-6 text-2xl font-bold text-white">Quest a {destination.name}</h1>
+      <div className="mb-6 flex items-center justify-between">
+        <h1 className="text-2xl font-bold text-white">Quest a {destination.name}</h1>
+        <Link
+          href={`/destinations/${destination.id}/map`}
+          className="text-sm text-yellow-400 hover:underline"
+        >
+          Vedi sulla mappa
+        </Link>
+      </div>
 
       {!quests || quests.length === 0 ? (
         <p className="text-gray-400">Nessuna Quest disponibile ancora per questa destinazione.</p>

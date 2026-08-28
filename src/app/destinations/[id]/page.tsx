@@ -81,12 +81,20 @@ export default async function DestinationDashboardPage({
         )}
       </div>
 
-      <Link
-        href={`/destinations/${destination.id}/quests`}
-        className="mt-8 inline-block rounded bg-yellow-500 px-6 py-3 font-semibold text-black hover:bg-yellow-400"
-      >
-        Vedi le Quest
-      </Link>
+      <div className="mt-8 flex gap-3">
+        <Link
+          href={`/destinations/${destination.id}/quests`}
+          className="rounded bg-yellow-500 px-6 py-3 font-semibold text-black hover:bg-yellow-400"
+        >
+          Vedi le Quest
+        </Link>
+        <Link
+          href={`/destinations/${destination.id}/map`}
+          className="rounded border border-gray-700 px-6 py-3 font-semibold text-gray-300 hover:border-yellow-500 hover:text-yellow-400"
+        >
+          Mappa
+        </Link>
+      </div>
     </main>
   );
 }
