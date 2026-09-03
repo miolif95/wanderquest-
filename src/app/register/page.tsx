@@ -99,7 +99,7 @@ export default function RegisterPage() {
             Ti abbiamo inviato un link di conferma a <strong>{email}</strong>. Clicca il
             link per attivare l&apos;account, poi torna qui per accedere.
           </p>
-          <Link href="/login" className="text-yellow-400 hover:underline">
+          <Link href="/login" className="text-bordeaux-400 hover:underline">
             Vai al login
           </Link>
         </div>
@@ -167,14 +167,14 @@ export default function RegisterPage() {
         <button
           type="submit"
           disabled={loading}
-          className="w-full rounded bg-yellow-500 py-2 font-semibold text-black disabled:opacity-50"
+          className="w-full rounded bg-bordeaux-500 py-2 font-semibold text-black disabled:opacity-50"
         >
           {loading ? "Registrazione in corso..." : "Registrati"}
         </button>
 
         <p className="text-center text-sm text-gray-400">
           Hai già un account?{" "}
-          <Link href="/login" className="text-yellow-400 hover:underline">
+          <Link href="/login" className="text-bordeaux-400 hover:underline">
             Accedi
           </Link>
         </p>

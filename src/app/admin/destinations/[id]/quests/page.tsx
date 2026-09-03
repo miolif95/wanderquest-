@@ -42,7 +42,7 @@ export default async function DestinationQuestsPage({
         </div>
         <Link
           href={`/admin/quests/new?destination_id=${id}`}
-          className="rounded bg-yellow-500 px-4 py-2 font-semibold text-black"
+          className="rounded bg-bordeaux-500 px-4 py-2 font-semibold text-black"
         >
           + Nuova Quest
         </Link>
@@ -83,7 +83,7 @@ export default async function DestinationQuestsPage({
                   </span>
                 </td>
                 <td className="py-3 text-right text-sm">
-                  <Link href={`/admin/quests/${q.id}`} className="text-yellow-400 hover:underline">
+                  <Link href={`/admin/quests/${q.id}`} className="text-bordeaux-400 hover:underline">
                     Modifica
                   </Link>
                 </td>

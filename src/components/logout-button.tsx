@@ -23,7 +23,7 @@ export function LogoutButton() {
   return (
     <button
       onClick={handleLogout}
-      className="text-sm text-gray-400 hover:text-yellow-400"
+      className="text-sm text-gray-400 hover:text-bordeaux-400"
     >
       Esci
     </button>

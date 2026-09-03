@@ -41,7 +41,7 @@ export default async function ProfileAchievementsPage() {
               key={a.id}
               className={`flex items-center gap-4 rounded-lg border p-4 ${
                 isUnlocked
-                  ? "border-yellow-700 bg-gray-900"
+                  ? "border-bordeaux-700 bg-gray-900"
                   : "border-gray-800 bg-gray-950"
               }`}
             >

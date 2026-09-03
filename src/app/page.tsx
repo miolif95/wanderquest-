@@ -43,13 +43,13 @@ export default async function Home() {
       {profile && progress ? (
         <div className="mt-6 w-full max-w-xs">
           <p className="text-gray-300">
-            Bentornato, <strong className="text-yellow-400">{profile.username}</strong>
+            Bentornato, <strong className="text-bordeaux-400">{profile.username}</strong>
           </p>
           <p className="mt-1 text-sm text-gray-400">
-            Livello {progress.level} · <span className="text-yellow-400">{progress.title}</span>
+            Livello {progress.level} · <span className="text-bordeaux-400">{progress.title}</span>
           </p>
           <div className="mt-2 h-2 overflow-hidden rounded-full bg-gray-800">
-            <div className="h-full bg-yellow-500" style={{ width: `${progress.progressRatio * 100}%` }} />
+            <div className="h-full bg-bordeaux-500" style={{ width: `${progress.progressRatio * 100}%` }} />
           </div>
         </div>
       ) : (
@@ -58,7 +58,7 @@ export default async function Home() {
 
       <Link
         href="/destinations"
-        className="mt-8 rounded bg-yellow-500 px-6 py-3 font-semibold text-black hover:bg-yellow-400"
+        className="mt-8 rounded bg-bordeaux-500 px-6 py-3 font-semibold text-black hover:bg-bordeaux-400"
       >
         Scegli una destinazione
       </Link>

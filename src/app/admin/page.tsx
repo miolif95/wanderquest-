@@ -22,7 +22,7 @@ export default async function AdminDestinationsPage() {
         <h1 className="text-2xl font-bold">Destinazioni</h1>
         <Link
           href="/admin/destinations/new"
-          className="rounded bg-yellow-500 px-4 py-2 font-semibold text-black"
+          className="rounded bg-bordeaux-500 px-4 py-2 font-semibold text-black"
         >
           + Nuova destinazione
         </Link>
@@ -65,19 +65,19 @@ export default async function AdminDestinationsPage() {
                 <td className="space-x-3 py-3 text-right text-sm">
                   <Link
                     href={`/admin/destinations/${d.id}/quests`}
-                    className="text-yellow-400 hover:underline"
+                    className="text-bordeaux-400 hover:underline"
                   >
                     Quest
                   </Link>
                   <Link
                     href={`/admin/destinations/${d.id}/sections`}
-                    className="text-yellow-400 hover:underline"
+                    className="text-bordeaux-400 hover:underline"
                   >
                     Guida
                   </Link>
                   <Link
                     href={`/admin/destinations/${d.id}`}
-                    className="text-yellow-400 hover:underline"
+                    className="text-bordeaux-400 hover:underline"
                   >
                     Modifica
                   </Link>

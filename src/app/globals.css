@@ -16,6 +16,15 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+
+  /* Palette del brand (nero + bordeaux), sostituisce il precedente
+     nero + giallo: usata per logo, stati attivi e accenti in tutta l'app. */
+  --color-bordeaux-300: #d17690;
+  --color-bordeaux-400: #b33951;
+  --color-bordeaux-500: #932c42;
+  --color-bordeaux-600: #6f2333;
+  --color-bordeaux-700: #5a1c29;
+  --color-bordeaux-900: #34101a;
 }
 
 body {

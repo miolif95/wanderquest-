@@ -18,13 +18,13 @@ export default async function AdminLayout({
       <header className="border-b border-gray-800 bg-gray-900 px-6 py-4">
         <div className="mx-auto flex max-w-5xl items-center justify-between">
           <nav className="flex items-center gap-6 text-sm">
-            <Link href="/admin" className="font-bold text-yellow-400">
+            <Link href="/admin" className="font-bold text-bordeaux-400">
               WanderQuest Admin
             </Link>
-            <Link href="/admin" className="hover:text-yellow-400">
+            <Link href="/admin" className="hover:text-bordeaux-400">
               Destinazioni
             </Link>
-            <Link href="/admin/achievements" className="hover:text-yellow-400">
+            <Link href="/admin/achievements" className="hover:text-bordeaux-400">
               Achievement
             </Link>
           </nav>

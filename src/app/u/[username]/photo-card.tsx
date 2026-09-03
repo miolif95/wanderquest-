@@ -123,7 +123,7 @@ export function PhotoCard({ photo, canInteract }: { photo: Photo; canInteract: b
           <button
             onClick={toggleLike}
             disabled={!canInteract}
-            className={liked ? "text-yellow-400" : "text-gray-400 disabled:opacity-50"}
+            className={liked ? "text-bordeaux-400" : "text-gray-400 disabled:opacity-50"}
           >
             {liked ? "★" : "☆"} {likeCount}
           </button>
@@ -156,7 +156,7 @@ export function PhotoCard({ photo, canInteract }: { photo: Photo; canInteract: b
                 />
                 <button
                   type="submit"
-                  className="shrink-0 rounded bg-yellow-500 px-2 text-xs font-semibold text-black"
+                  className="shrink-0 rounded bg-bordeaux-500 px-2 text-xs font-semibold text-black"
                 >
                   Invia
                 </button>

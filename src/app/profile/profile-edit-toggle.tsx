@@ -26,7 +26,7 @@ export function ProfileEditToggle({
     <div className="mt-3">
       <button
         onClick={() => setOpen((o) => !o)}
-        className="text-sm text-yellow-400 hover:underline"
+        className="text-sm text-bordeaux-400 hover:underline"
       >
         {open ? "Chiudi" : "Modifica profilo"}
       </button>

@@ -21,7 +21,7 @@ const COMPLETION_LABELS: Record<string, string> = {
 
 const STATUS_LABELS: Record<string, { label: string; className: string }> = {
   AVAILABLE: { label: "Disponibile", className: "bg-gray-800 text-gray-300" },
-  ACTIVE: { label: "In corso", className: "bg-yellow-900 text-yellow-300" },
+  ACTIVE: { label: "In corso", className: "bg-bordeaux-900 text-bordeaux-300" },
   COMPLETED: { label: "Completata", className: "bg-green-900 text-green-300" },
   LOCKED: { label: "🔒 Bloccata", className: "bg-red-950 text-red-300" },
 };
@@ -182,7 +182,7 @@ export default async function QuestDetailPage({
           <StartQuestButton questId={quest.id} />
         ) : (
           <p className="mt-6 text-sm text-gray-400">
-            <Link href="/login" className="text-yellow-400 hover:underline">
+            <Link href="/login" className="text-bordeaux-400 hover:underline">
               Accedi
             </Link>{" "}
             per avviare questa Quest.

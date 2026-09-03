@@ -40,7 +40,7 @@ export function StartQuestButton({ questId }: { questId: string }) {
       <button
         onClick={handleStart}
         disabled={loading}
-        className="rounded bg-yellow-500 px-6 py-3 font-semibold text-black hover:bg-yellow-400 disabled:opacity-50"
+        className="rounded bg-bordeaux-500 px-6 py-3 font-semibold text-black hover:bg-bordeaux-400 disabled:opacity-50"
       >
         {loading ? "Avvio in corso..." : "Avvia Quest"}
       </button>

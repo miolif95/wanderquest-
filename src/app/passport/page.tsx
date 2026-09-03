@@ -44,7 +44,7 @@ export default async function PassportPage() {
       {!stamps || stamps.length === 0 ? (
         <p className="text-gray-400">
           Nessun timbro ancora raccolto:{" "}
-          <Link href="/destinations" className="text-yellow-400 hover:underline">
+          <Link href="/destinations" className="text-bordeaux-400 hover:underline">
             scegli una destinazione
           </Link>{" "}
           per iniziare.
@@ -56,7 +56,7 @@ export default async function PassportPage() {
             return (
               <div
                 key={stamp.destination_id}
-                className="overflow-hidden rounded-lg border-2 border-dashed border-yellow-700 bg-gray-900 text-center"
+                className="overflow-hidden rounded-lg border-2 border-dashed border-bordeaux-700 bg-gray-900 text-center"
               >
                 {destination?.image_url && (
                   // eslint-disable-next-line @next/next/no-img-element -- URL dinamico da Supabase Storage
@@ -72,7 +72,7 @@ export default async function PassportPage() {
                   <p className="mt-3 text-xs text-gray-500">
                     Prima visita: {new Date(stamp.first_completed_at).toLocaleDateString("it-IT")}
                   </p>
-                  <p className="mt-1 text-sm text-yellow-400">
+                  <p className="mt-1 text-sm text-bordeaux-400">
                     {stamp.quests_completed} Quest · {stamp.xp_earned} XP
                   </p>
                 </div>

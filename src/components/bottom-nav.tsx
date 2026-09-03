@@ -32,7 +32,7 @@ export function BottomNav({ avatarUrl }: { avatarUrl: string | null }) {
           href={item.href}
           aria-label={item.label}
           className={`flex h-11 w-11 items-center justify-center rounded-full text-2xl ${
-            isActive(item.href) ? "bg-yellow-500/20 text-yellow-400" : "text-gray-400"
+            isActive(item.href) ? "bg-bordeaux-500/20 text-bordeaux-400" : "text-gray-400"
           }`}
         >
           {item.icon}
@@ -42,7 +42,7 @@ export function BottomNav({ avatarUrl }: { avatarUrl: string | null }) {
         href="/profile"
         aria-label="Profilo"
         className={`flex h-11 w-11 items-center justify-center overflow-hidden rounded-full ${
-          isActive("/profile") ? "ring-2 ring-yellow-400" : ""
+          isActive("/profile") ? "ring-2 ring-bordeaux-400" : ""
         }`}
       >
         {avatarUrl ? (
@@ -51,7 +51,7 @@ export function BottomNav({ avatarUrl }: { avatarUrl: string | null }) {
         ) : (
           <span
             className={`flex h-full w-full items-center justify-center text-2xl ${
-              isActive("/profile") ? "text-yellow-400" : "text-gray-400"
+              isActive("/profile") ? "text-bordeaux-400" : "text-gray-400"
             }`}
           >
             👤

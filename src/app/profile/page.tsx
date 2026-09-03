@@ -71,14 +71,14 @@ export default async function ProfilePage() {
 
       <div className="mt-6 rounded-lg border border-gray-800 bg-gray-900 p-6">
         <div className="flex items-baseline justify-between">
-          <span className="text-lg font-semibold text-yellow-400">
+          <span className="text-lg font-semibold text-bordeaux-400">
             Livello {progress.level} · {progress.title}
           </span>
           <span className="text-sm text-gray-400">{xp} XP</span>
         </div>
         <div className="mt-2">
           <div className="h-2 overflow-hidden rounded-full bg-gray-800">
-            <div className="h-full bg-yellow-500" style={{ width: `${progress.progressRatio * 100}%` }} />
+            <div className="h-full bg-bordeaux-500" style={{ width: `${progress.progressRatio * 100}%` }} />
           </div>
           <p className="mt-1 text-xs text-gray-500">
             {progress.xpForNextLevel - progress.xpIntoLevel} XP al livello {progress.level + 1}
@@ -104,16 +104,16 @@ export default async function ProfilePage() {
       </div>
 
       <div className="mt-6 flex flex-wrap gap-4 text-sm">
-        <Link href="/profile/achievements" className="text-yellow-400 hover:underline">
+        <Link href="/profile/achievements" className="text-bordeaux-400 hover:underline">
           Achievement
         </Link>
-        <Link href="/profile/history" className="text-yellow-400 hover:underline">
+        <Link href="/profile/history" className="text-bordeaux-400 hover:underline">
           Storico viaggi
         </Link>
-        <Link href="/passport" className="text-yellow-400 hover:underline">
+        <Link href="/passport" className="text-bordeaux-400 hover:underline">
           Travel Passport
         </Link>
-        <Link href="/profile/photos" className="text-yellow-400 hover:underline">
+        <Link href="/profile/photos" className="text-bordeaux-400 hover:underline">
           Le mie foto
         </Link>
         <Link href={`/u/${profile?.username}`} className="text-gray-400 hover:underline">

@@ -13,7 +13,7 @@ const CATEGORY_LABELS: Record<string, string> = {
 
 const STATUS_LABELS: Record<string, { label: string; className: string }> = {
   AVAILABLE: { label: "Disponibile", className: "bg-gray-800 text-gray-300" },
-  ACTIVE: { label: "In corso", className: "bg-yellow-900 text-yellow-300" },
+  ACTIVE: { label: "In corso", className: "bg-bordeaux-900 text-bordeaux-300" },
   COMPLETED: { label: "Completata", className: "bg-green-900 text-green-300" },
   LOCKED: { label: "🔒 Bloccata", className: "bg-red-950 text-red-300" },
 };
@@ -92,7 +92,7 @@ export default async function PublicQuestListPage({
         <h1 className="text-2xl font-bold text-white">Quest a {destination.name}</h1>
         <Link
           href={`/destinations/${destination.id}/map`}
-          className="text-sm text-yellow-400 hover:underline"
+          className="text-sm text-bordeaux-400 hover:underline"
         >
           Vedi sulla mappa
         </Link>
@@ -113,7 +113,7 @@ export default async function PublicQuestListPage({
               <Link
                 key={q.id}
                 href={`/quests/${q.id}`}
-                className="flex items-center justify-between rounded-lg border border-gray-800 bg-gray-900 p-4 transition-colors hover:border-yellow-500"
+                className="flex items-center justify-between rounded-lg border border-gray-800 bg-gray-900 p-4 transition-colors hover:border-bordeaux-500"
               >
                 <div>
                   <h2 className="font-semibold text-white">{q.title}</h2>

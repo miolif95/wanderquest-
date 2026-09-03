@@ -151,7 +151,7 @@ export function DestinationForm({ destination }: { destination?: Destination }) 
       <button
         type="submit"
         disabled={saving}
-        className="rounded bg-yellow-500 px-4 py-2 font-semibold text-black disabled:opacity-50"
+        className="rounded bg-bordeaux-500 px-4 py-2 font-semibold text-black disabled:opacity-50"
       >
         {saving ? "Salvataggio..." : isEdit ? "Salva modifiche" : "Crea destinazione"}
       </button>

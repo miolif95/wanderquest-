@@ -176,7 +176,7 @@ export function AchievementForm() {
       <button
         type="submit"
         disabled={saving}
-        className="rounded bg-yellow-500 px-4 py-2 font-semibold text-black disabled:opacity-50"
+        className="rounded bg-bordeaux-500 px-4 py-2 font-semibold text-black disabled:opacity-50"
       >
         {saving ? "Creazione..." : "Crea achievement"}
       </button>

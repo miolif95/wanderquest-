@@ -120,13 +120,13 @@ export function CompleteQuestPanel({
 
   if (result) {
     return (
-      <div className="mt-6 rounded-lg border border-yellow-500 bg-gray-900 p-6 text-center">
+      <div className="mt-6 rounded-lg border border-bordeaux-500 bg-gray-900 p-6 text-center">
         <p className="text-2xl">🎉</p>
         <h2 className="mt-2 text-xl font-bold text-white">Quest completata!</h2>
-        <p className="mt-1 text-yellow-400">+{result.xpGained} XP</p>
+        <p className="mt-1 text-bordeaux-400">+{result.xpGained} XP</p>
 
         {result.leveledUp && (
-          <p className="mt-2 rounded bg-yellow-900/50 px-3 py-2 text-yellow-300">
+          <p className="mt-2 rounded bg-bordeaux-900/50 px-3 py-2 text-bordeaux-300">
             Sei salito al livello {result.newLevel}: <strong>{result.newLevelTitle}</strong>!
           </p>
         )}
@@ -167,7 +167,7 @@ export function CompleteQuestPanel({
 
         <Link
           href={`/destinations/${destinationId}/quests`}
-          className="mt-6 inline-block text-yellow-400 hover:underline"
+          className="mt-6 inline-block text-bordeaux-400 hover:underline"
         >
           Torna alla lista Quest
         </Link>
@@ -185,7 +185,7 @@ export function CompleteQuestPanel({
         <button
           onClick={handleManualComplete}
           disabled={loading}
-          className="rounded bg-yellow-500 px-6 py-3 font-semibold text-black hover:bg-yellow-400 disabled:opacity-50"
+          className="rounded bg-bordeaux-500 px-6 py-3 font-semibold text-black hover:bg-bordeaux-400 disabled:opacity-50"
         >
           {loading ? "Completamento..." : "Completa Quest"}
         </button>
@@ -195,7 +195,7 @@ export function CompleteQuestPanel({
         <button
           onClick={handleGpsComplete}
           disabled={loading}
-          className="rounded bg-yellow-500 px-6 py-3 font-semibold text-black hover:bg-yellow-400 disabled:opacity-50"
+          className="rounded bg-bordeaux-500 px-6 py-3 font-semibold text-black hover:bg-bordeaux-400 disabled:opacity-50"
         >
           {loading ? "Verifica posizione..." : "Completa Quest (verifica posizione)"}
         </button>

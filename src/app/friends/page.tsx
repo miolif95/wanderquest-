@@ -36,7 +36,7 @@ export default async function FriendsPage() {
             <Link
               key={p.id}
               href={`/u/${p.username}`}
-              className="flex items-center gap-4 rounded-lg border border-gray-800 bg-gray-900 p-4 transition-colors hover:border-yellow-500"
+              className="flex items-center gap-4 rounded-lg border border-gray-800 bg-gray-900 p-4 transition-colors hover:border-bordeaux-500"
             >
               {p.avatar_url ? (
                 // eslint-disable-next-line @next/next/no-img-element -- URL dinamico da Supabase Storage

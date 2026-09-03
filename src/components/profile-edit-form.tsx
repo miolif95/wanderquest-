@@ -106,7 +106,7 @@ export function ProfileEditForm({ userId, initialAvatarUrl, initialBio, onSaved,
           </div>
         )}
         <div>
-          <label className="block cursor-pointer text-sm text-yellow-400 hover:underline">
+          <label className="block cursor-pointer text-sm text-bordeaux-400 hover:underline">
             {uploading ? "Caricamento..." : "Carica una foto"}
             <input
               type="file"
@@ -138,7 +138,7 @@ export function ProfileEditForm({ userId, initialAvatarUrl, initialBio, onSaved,
         <button
           onClick={handleSave}
           disabled={saving || uploading}
-          className="rounded bg-yellow-500 px-4 py-2 text-sm font-semibold text-black hover:bg-yellow-400 disabled:opacity-50"
+          className="rounded bg-bordeaux-500 px-4 py-2 text-sm font-semibold text-black hover:bg-bordeaux-400 disabled:opacity-50"
         >
           {saving ? "Salvataggio..." : "Salva"}
         </button>

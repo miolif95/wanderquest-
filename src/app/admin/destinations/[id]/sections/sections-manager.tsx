@@ -163,7 +163,7 @@ export function SectionsManager({
                   <button
                     onClick={() => handleMove(index, "up")}
                     disabled={index === 0}
-                    className="text-gray-400 hover:text-yellow-400 disabled:opacity-30"
+                    className="text-gray-400 hover:text-bordeaux-400 disabled:opacity-30"
                     aria-label="Sposta su"
                   >
                     ↑
@@ -171,12 +171,12 @@ export function SectionsManager({
                   <button
                     onClick={() => handleMove(index, "down")}
                     disabled={index === sections.length - 1}
-                    className="text-gray-400 hover:text-yellow-400 disabled:opacity-30"
+                    className="text-gray-400 hover:text-bordeaux-400 disabled:opacity-30"
                     aria-label="Sposta giù"
                   >
                     ↓
                   </button>
-                  <button onClick={() => setEditingId(section.id)} className="text-yellow-400 hover:underline">
+                  <button onClick={() => setEditingId(section.id)} className="text-bordeaux-400 hover:underline">
                     Modifica
                   </button>
                   <button onClick={() => handleDelete(section.id)} className="text-red-400 hover:underline">
@@ -225,7 +225,7 @@ export function SectionsManager({
         <button
           type="submit"
           disabled={creating}
-          className="rounded bg-yellow-500 px-4 py-2 font-semibold text-black disabled:opacity-50"
+          className="rounded bg-bordeaux-500 px-4 py-2 font-semibold text-black disabled:opacity-50"
         >
           {creating ? "Aggiunta..." : "Aggiungi sezione"}
         </button>
@@ -258,7 +258,7 @@ function SectionEditForm({
   return (
     <form
       onSubmit={handleSubmit}
-      className="space-y-3 rounded-lg border border-yellow-600 bg-gray-900 p-4"
+      className="space-y-3 rounded-lg border border-bordeaux-600 bg-gray-900 p-4"
     >
       <div className="grid grid-cols-3 gap-3">
         <input
@@ -285,7 +285,7 @@ function SectionEditForm({
         <button
           type="submit"
           disabled={saving}
-          className="rounded bg-yellow-500 px-4 py-2 text-sm font-semibold text-black disabled:opacity-50"
+          className="rounded bg-bordeaux-500 px-4 py-2 text-sm font-semibold text-black disabled:opacity-50"
         >
           {saving ? "Salvataggio..." : "Salva"}
         </button>

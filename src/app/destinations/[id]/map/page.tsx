@@ -91,7 +91,7 @@ export default async function DestinationMapPage({
           <span className="h-3 w-3 rounded-full bg-gray-500" /> Disponibile
         </span>
         <span className="flex items-center gap-1.5">
-          <span className="h-3 w-3 rounded-full bg-yellow-500" /> In corso
+          <span className="h-3 w-3 rounded-full bg-bordeaux-500" /> In corso
         </span>
         <span className="flex items-center gap-1.5">
           <span className="h-3 w-3 rounded-full bg-green-500" /> Completata

@@ -212,7 +212,7 @@ export default async function PublicProfilePage({
             <span
               key={a.id}
               title={a.name}
-              className="rounded border border-yellow-700 bg-gray-900 px-2 py-1 text-sm"
+              className="rounded border border-bordeaux-700 bg-gray-900 px-2 py-1 text-sm"
             >
               {a.icon} {a.name}
             </span>

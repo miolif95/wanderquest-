@@ -29,7 +29,7 @@ export default async function DestinationsPage() {
             <Link
               key={d.id}
               href={`/destinations/${d.id}`}
-              className="overflow-hidden rounded-lg border border-gray-800 bg-gray-900 transition-colors hover:border-yellow-500"
+              className="overflow-hidden rounded-lg border border-gray-800 bg-gray-900 transition-colors hover:border-bordeaux-500"
             >
               {d.image_url && (
                 // eslint-disable-next-line @next/next/no-img-element -- URL dinamico da Supabase Storage

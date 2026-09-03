@@ -20,7 +20,7 @@ export function SiteHeader({
 }) {
   return (
     <div className="flex items-center justify-between gap-2 bg-gray-900 px-4 py-2 text-sm sm:px-6">
-      <Link href="/" className="shrink-0 font-bold text-yellow-400">
+      <Link href="/" className="shrink-0 font-bold text-bordeaux-400">
         WanderQuest
       </Link>
       <div className="flex min-w-0 items-center gap-2 sm:gap-4">
@@ -34,10 +34,10 @@ export function SiteHeader({
           </>
         ) : (
           <>
-            <Link href="/login" className="text-gray-300 hover:text-yellow-400">
+            <Link href="/login" className="text-gray-300 hover:text-bordeaux-400">
               Accedi
             </Link>
-            <Link href="/register" className="text-gray-300 hover:text-yellow-400">
+            <Link href="/register" className="text-gray-300 hover:text-bordeaux-400">
               Registrati
             </Link>
           </>

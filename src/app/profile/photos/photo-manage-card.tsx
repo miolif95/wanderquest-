@@ -111,7 +111,7 @@ export function PhotoManageCard({
           <button
             onClick={toggleVisibility}
             disabled={loading}
-            className="text-yellow-400 hover:underline disabled:opacity-50"
+            className="text-bordeaux-400 hover:underline disabled:opacity-50"
           >
             {isPublic ? "Rendi privata" : "Rendi pubblica"}
           </button>
